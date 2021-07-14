@@ -5,7 +5,7 @@ import UserList from "./components/Users/UserList";
 
 function App(props) {
   //State to store user data
-  const [users, setUsers] = useState("");
+  const [users, setUsers] = useState([]);
 
   //To Store user data or bring data from children to parent
   const userDataHandler = (userInfo) => {
