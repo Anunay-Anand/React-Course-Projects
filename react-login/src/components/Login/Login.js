@@ -12,21 +12,26 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   //Using UseEffect to seperate the validations and only run when dependencies are changed
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    //cleanup function
+    return () => {
+      //We cleamup or remove previous setTimeout until the user actually pauses for 500ms thus request is made
+      clearTimeout(identifier);
+    };
+  }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
-
-    setFormIsValid(
-      event.target.value.includes("@") && enteredPassword.trim().length > 6
-    );
   };
 
   const passwordChangeHandler = (event) => {
     setEnteredPassword(event.target.value);
-
-    setFormIsValid(
-      event.target.value.trim().length > 6 && enteredEmail.includes("@")
-    );
   };
 
   const validateEmailHandler = () => {
