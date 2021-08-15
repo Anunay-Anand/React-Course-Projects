@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  useRef,
+} from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
@@ -87,9 +93,23 @@ const Login = (props) => {
   // Passing email and password on Authentication Context Component for Login
   const ctx = useContext(AuthContext);
 
+  // Add reference for email and password to focus onInvalid
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   const submitHandler = (event) => {
     event.preventDefault();
-    ctx.onLogin(emailState.value, passwordState.value);
+    // Only when the form is valid is that we send data to parent components
+    if (formIsValid) {
+      ctx.onLogin(emailState.value, passwordState.value);
+      // Here the focus method used is not built in Input DOM method but pointing
+      // to imperativeRef callback method which points to the activate function in children ref component
+      // Here the activate function contains the DOM input focus.Thus forwarding reference
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
+    }
   };
 
   return (
@@ -97,6 +117,7 @@ const Login = (props) => {
       <form onSubmit={submitHandler}>
         <Input
           id="email"
+          ref={emailInputRef}
           label="E-Mail"
           type="email"
           isValid={emailIsValid}
@@ -106,6 +127,7 @@ const Login = (props) => {
         />
         <Input
           id="email"
+          ref={passwordInputRef}
           label="Password"
           type="password"
           isValid={passwordIsValid}
@@ -114,7 +136,8 @@ const Login = (props) => {
           onBlur={validatePasswordHandler}
         />
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          {/* We will remove the button is disabled to understand the concept of forward refs disabled={!formIsValid} */}
+          <Button type="submit" className={classes.btn}>
             Login
           </Button>
         </div>
