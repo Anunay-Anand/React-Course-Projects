@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const useCounter = () => {
+const useCounter = (forwards = true) => {
   // using useState hook to store the changed counter value
   const [counter, setCounter] = useState(0);
 
@@ -8,16 +8,24 @@ const useCounter = () => {
   useEffect(() => {
     // Setting setInterval when the DOM renders as the page is loaded the first time
     const timer = setInterval(() => {
-      setCounter((prevCounter) => {
-        return prevCounter + 1;
-      });
+      if (forwards) {
+        setCounter((prevCounter) => {
+          return prevCounter + 1;
+        });
+      } else {
+        setCounter((prevCounter) => {
+          return prevCounter - 1;
+        });
+      }
     }, 1000);
 
     // Clearing function to clear the timer of previous
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [forwards]);
+
+  return counter;
 };
 
 export default useCounter;
