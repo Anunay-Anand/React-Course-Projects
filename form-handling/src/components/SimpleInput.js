@@ -3,7 +3,8 @@ import { useRef, useState } from "react";
 const SimpleInput = (props) => {
   // Managing input with useState and validation
   const [enteredName, setEnteredName] = useState("");
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredNameTouch, setEnteredNameTouch] = useState(false);
 
   // Managing the input with useRef
   const nameInputRef = useRef();
@@ -15,6 +16,8 @@ const SimpleInput = (props) => {
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
+    // setting touch state to be true
+    setEnteredNameTouch(true);
     // If input is invalid (Set the state to be false)
     if (enteredName.trim() === "") {
       setEnteredNameIsValid(false);
@@ -28,12 +31,21 @@ const SimpleInput = (props) => {
     setEnteredName("");
   };
 
+  // Checking if user touched the input or not
+  // only if the entered name is invalid and it was touched is that we will show error
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouch;
+
+  // Adding conditional styling if error
+  const nameInputClasses = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
+
   return (
     <form onSubmit={formSubmissionHandler}>
-      {!enteredNameIsValid && (
+      {nameInputIsInvalid && (
         <p className="error-text">The name is not Valid.</p>
       )}
-      <div className="form-control">
+      <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
           ref={nameInputRef}
