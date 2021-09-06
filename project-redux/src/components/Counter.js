@@ -4,8 +4,8 @@ import classes from "./Counter.module.css";
 
 const Counter = () => {
   // using useSelector hook to use Store
-  const counter = useSelector((state) => state.counter);
-  const showCounter = useSelector((state) => state.showCounter);
+  const counter = useSelector((state) => state.counter.counter);
+  const showCounter = useSelector((state) => state.counter.showCounter);
 
   // Creating dispatch function from useDispatch
   const dispatch = useDispatch();

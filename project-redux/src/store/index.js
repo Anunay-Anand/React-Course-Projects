@@ -1,13 +1,13 @@
 // Import from redux library and redux toolkit
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-// Creating initial state for the reducer function
-const initialState = { counter: 0, showCounter: true };
+// Creating initial state for the reducer functions for counter
+const initialCounterState = { counter: 0, showCounter: true };
 
-// Using createSlice for state management
+// Using createSlice for Counter related state management
 const counterSlice = createSlice({
   name: "counter",
-  initialState,
+  initialState: initialCounterState,
   reducers: {
     increment(state) {
       state.counter++;
@@ -23,6 +23,34 @@ const counterSlice = createSlice({
     },
   },
 });
+
+// Creating initial state for the reducer functions for Authentication
+const intitialAuthState = { isAuthenticated: false };
+
+// Using createSlice for auth related state management
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: intitialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+// Create a store for counter and auth for their it's redux functions
+const store = configureStore({
+  reducer: { counter: counterSlice.reducer, auth: authSlice.reducer },
+});
+
+// exporting actions keys
+export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
+
+export default store;
 
 // Creating a reducer function to dispatch action
 // const counterReducer = (state = initialState, action) => {
@@ -52,13 +80,3 @@ const counterSlice = createSlice({
 //   }
 //   return state;
 // };
-
-// Create a store for state with redux
-const store = configureStore({
-  reducer: counterSlice.reducer,
-});
-
-// exporting actions keys
-export const counterActions = counterSlice.actions;
-
-export default store;
