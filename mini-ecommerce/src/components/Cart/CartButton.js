@@ -1,6 +1,6 @@
 // Importing hooks from react redux and action from redux
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../store";
+import { cartActions } from "../../store/cart";
 
 import classes from "./CartButton.module.css";
 
