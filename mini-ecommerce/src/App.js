@@ -7,7 +7,7 @@ import Products from "./components/Shop/Products";
 
 function App() {
   // Using useSelector to import the specific state property or state from the state slice object
-  const isCartVisible = useSelector((state) => state.cart.isCartVisible);
+  const isCartVisible = useSelector((state) => state.ui.isCartVisible);
 
   return (
     <Layout>

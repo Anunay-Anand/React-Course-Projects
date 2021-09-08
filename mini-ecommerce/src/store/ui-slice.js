@@ -2,12 +2,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Defining the initial state object
-const cartInitialState = { isCartVisible: false };
+const uiInitialState = { isCartVisible: false };
 
 // Creating out first slice or redux functions to manage cart actions
-const cartReducer = createSlice({
-  name: "cart",
-  initialState: cartInitialState,
+const uiReducer = createSlice({
+  name: "ui",
+  initialState: uiInitialState,
   reducers: {
     showCartToggler(state) {
       state.isCartVisible = !state.isCartVisible;
@@ -16,7 +16,7 @@ const cartReducer = createSlice({
 });
 
 // Exporting the action keys for dispatching action from components
-export const cartActions = cartReducer.actions;
+export const uiActions = uiReducer.actions;
 
 // Exporting slice reducer for store
-export default cartReducer;
+export default uiReducer;

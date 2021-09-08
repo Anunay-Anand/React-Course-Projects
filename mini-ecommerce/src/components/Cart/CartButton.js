@@ -1,6 +1,6 @@
 // Importing hooks from react redux and action from redux
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../store/cart";
+import { uiActions } from "../../store/ui-slice";
 
 import classes from "./CartButton.module.css";
 
@@ -10,7 +10,7 @@ const CartButton = (props) => {
 
   // Cart toggle handler
   const cartToggleHandler = () => {
-    dispatch(cartActions.showCartToggler());
+    dispatch(uiActions.showCartToggler());
   };
 
   return (
