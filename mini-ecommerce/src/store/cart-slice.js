@@ -1,6 +1,10 @@
 // importing the redux toolkit
 import { createSlice } from "@reduxjs/toolkit";
 
+// importing other slice actions
+import { uiActions } from "./ui-slice";
+import axios from "axios";
+
 // Defining the initial state object
 const cartInitialState = { cartItems: [], totalQuantity: 0 };
 
@@ -64,9 +68,39 @@ const cartReducer = createSlice({
 });
 
 // Creating a thunk or action creator
-const sendCartData = (cardData) => {
-  return (dispatch) => {
-    dispatch();
+export const sendCartData = (cart) => {
+  return async (dispatch) => {
+    // Loading Starts Here (dispatching notification to redux or state slice)
+    dispatch(
+      uiActions.showNotification({
+        status: "pending",
+        title: "sending...",
+        message: "Sending cart Data",
+      })
+    );
+    // Sending put request to the server with axios
+    try {
+      await axios.put(
+        "https://task-8e5d7-default-rtdb.firebaseio.com/cart.json",
+        JSON.stringify(cart)
+      );
+      // Dispatching success message on succesful run of function
+      dispatch(
+        uiActions.showNotification({
+          status: "success",
+          title: "Success!",
+          message: "Sent cart data successfully!",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "Error!",
+          message: error.message,
+        })
+      );
+    }
   };
 };
 

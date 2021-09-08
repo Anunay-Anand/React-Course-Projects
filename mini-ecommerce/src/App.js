@@ -3,8 +3,7 @@ import { Fragment, useEffect } from "react";
 
 // import hooks from redux toolkit and react-redux
 import { useSelector, useDispatch } from "react-redux";
-import { uiActions } from "./store/ui-slice";
-import axios from "axios";
+import { sendCartData } from "./store/cart-slice";
 
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
@@ -26,47 +25,12 @@ function App() {
 
   // Check if there is a change in cart item added or removed
   useEffect(() => {
-    // Sending an asynchornous Request to the server
-    const sendCartData = async () => {
-      // Loading Starts Here (dispatching notification to redux or state slice)
-      dispatch(
-        uiActions.showNotification({
-          status: "pending",
-          title: "sending...",
-          message: "Sending cart Data",
-        })
-      );
-      // Sending put request to the server with axios
-      try {
-        await axios.put(
-          "https://task-8e5d7-default-rtdb.firebaseio.com/cart.json",
-          JSON.stringify(cart)
-        );
-        // Dispatching success message on succesful run of function
-        dispatch(
-          uiActions.showNotification({
-            status: "success",
-            title: "Success!",
-            message: "Sent cart data successfully!",
-          })
-        );
-      } catch (error) {
-        dispatch(
-          uiActions.showNotification({
-            status: "error",
-            title: "Error!",
-            message: error.message,
-          })
-        );
-      }
-    };
     if (isInitial) {
       isInitial = false;
       return;
     }
-
-    // Run the async function
-    sendCartData();
+    // Calling user created action or thunk
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
