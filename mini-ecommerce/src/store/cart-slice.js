@@ -10,33 +10,41 @@ const cartReducer = createSlice({
   initialState: cartInitialState,
   reducers: {
     addItemToCart(state, action) {
+      // Always increase the quantity by one
+      state.totalQuantity++;
       // extracting the item from payload which is in the form of an object
       const newItem = action.payload;
       // Check if the item already exists
-      const existingItem = state.items.find((item) => item.id === newItem.id);
+      const existingItem = state.cartItems.find(
+        (item) => item.id === newItem.id
+      );
       // If item does not exist then push it
       if (!existingItem) {
         // simply push the item as imux works in back end and will make sure the previous state is not mutated
         state.cartItems.push({
-          itemId: newItem.id,
+          id: newItem.id,
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price,
-          name: newItem.price,
+          name: newItem.title,
         });
       } else {
-        const updatedItem = {
-          ...existingItem,
-          quantity: newItem.quantity + existingItem.quantity,
-          totalPrice: existingItem.price + newItem.price,
-        };
+        // Longer Method
         // Replace it in state
-        state[existingItem.id] = updatedItem;
-        // existingItem.quantity++;
-        // existingItem.totalPrice = existingItem.totalPrice + newItem.price;
+        // const updatedItem = {
+        //   ...existingItem,
+        //   quantity: existingItem.quantity++,
+        //   totalPrice: existingItem.price + newItem.price,
+        // };
+        // state[existingItem.id] = updatedItem;
+        // Easier Method
+        existingItem.quantity++;
+        existingItem.totalPrice = existingItem.totalPrice + newItem.price;
       }
     },
     removeItemFromCart(state, action) {
+      // Always decrease the item quantity one
+      state.totalQuantity--;
       // Extract the id from payload
       const id = action.payload;
       // Check if the item exists

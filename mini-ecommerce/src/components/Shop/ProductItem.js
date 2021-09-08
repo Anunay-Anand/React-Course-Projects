@@ -1,8 +1,22 @@
-import Card from '../UI/Card';
-import classes from './ProductItem.module.css';
+// importing hooks from react-redux & cartActions to dispatch
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../store/cart-slice";
+
+import Card from "../UI/Card";
+import classes from "./ProductItem.module.css";
 
 const ProductItem = (props) => {
-  const { title, price, description } = props;
+  const { id, title, price, description } = props;
+
+  // dispatch action to add the product in cart
+  const dispatch = useDispatch();
+
+  const addItemHandler = () => {
+    // JavaScript will automatically seperate keys and value with same name
+    const item = { id, title, price, description };
+    // Now pass this item as payload
+    dispatch(cartActions.addItemToCart(item));
+  };
 
   return (
     <li className={classes.item}>
@@ -13,7 +27,7 @@ const ProductItem = (props) => {
         </header>
         <p>{description}</p>
         <div className={classes.actions}>
-          <button>Add to Cart</button>
+          <button onClick={addItemHandler}>Add to Cart</button>
         </div>
       </Card>
     </li>
