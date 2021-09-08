@@ -1,18 +1,19 @@
 // importing the redux toolkit
 import { createSlice } from "@reduxjs/toolkit";
 
-// importing other slice actions
-import { uiActions } from "./ui-slice";
-import axios from "axios";
-
 // Defining the initial state object
-const cartInitialState = { cartItems: [], totalQuantity: 0 };
+const cartInitialState = { cartItems: [], totalQuantity: 0, changed: false };
 
 // Creating out first slice or redux functions to manage cart actions
 const cartReducer = createSlice({
   name: "cart",
   initialState: cartInitialState,
   reducers: {
+    // to replace the quantity and items with the data coming from firebase
+    replaceCart(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.cartItems = action.payload.items;
+    },
     addItemToCart(state, action) {
       // Always increase the quantity by one
       state.totalQuantity++;
@@ -22,6 +23,8 @@ const cartReducer = createSlice({
       const existingItem = state.cartItems.find(
         (item) => item.id === newItem.id
       );
+      // Set changed cart to be true
+      state.changed = true;
       // If item does not exist then push it
       if (!existingItem) {
         // simply push the item as imux works in back end and will make sure the previous state is not mutated
@@ -33,14 +36,6 @@ const cartReducer = createSlice({
           name: newItem.title,
         });
       } else {
-        // Longer Method
-        // Replace it in state
-        // const updatedItem = {
-        //   ...existingItem,
-        //   quantity: existingItem.quantity++,
-        //   totalPrice: existingItem.price + newItem.price,
-        // };
-        // state[existingItem.id] = updatedItem;
         // Easier Method
         existingItem.quantity++;
         existingItem.totalPrice = existingItem.totalPrice + newItem.price;
@@ -53,10 +48,12 @@ const cartReducer = createSlice({
       const id = action.payload;
       // Check if the item exists
       const existingItem = state.cartItems.find((item) => item.id === id);
+      // Set changed cart to be true
+      state.changed = true;
       // If only one item exist
       if (existingItem.quantity === 1) {
         // We keep all the item whose id does not match existingItem id
-        state.items.filter((item) => item.id !== id);
+        state.cartItems = state.cartItems.filter((item) => item.id !== id);
       } else {
         // If the item exist more than one
         // Decrease the quantity by one and decrease the amount by 1 item
@@ -66,43 +63,6 @@ const cartReducer = createSlice({
     },
   },
 });
-
-// Creating a thunk or action creator
-export const sendCartData = (cart) => {
-  return async (dispatch) => {
-    // Loading Starts Here (dispatching notification to redux or state slice)
-    dispatch(
-      uiActions.showNotification({
-        status: "pending",
-        title: "sending...",
-        message: "Sending cart Data",
-      })
-    );
-    // Sending put request to the server with axios
-    try {
-      await axios.put(
-        "https://task-8e5d7-default-rtdb.firebaseio.com/cart.json",
-        JSON.stringify(cart)
-      );
-      // Dispatching success message on succesful run of function
-      dispatch(
-        uiActions.showNotification({
-          status: "success",
-          title: "Success!",
-          message: "Sent cart data successfully!",
-        })
-      );
-    } catch (error) {
-      dispatch(
-        uiActions.showNotification({
-          status: "error",
-          title: "Error!",
-          message: error.message,
-        })
-      );
-    }
-  };
-};
 
 // Exporting the action keys for dispatching action from components
 export const cartActions = cartReducer.actions;
