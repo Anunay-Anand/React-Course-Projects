@@ -63,6 +63,13 @@ const cartReducer = createSlice({
   },
 });
 
+// Creating a thunk or action creator
+const sendCartData = (cardData) => {
+  return (dispatch) => {
+    dispatch();
+  };
+};
+
 // Exporting the action keys for dispatching action from components
 export const cartActions = cartReducer.actions;
 

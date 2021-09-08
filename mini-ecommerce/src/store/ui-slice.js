@@ -2,7 +2,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Defining the initial state object
-const uiInitialState = { isCartVisible: false };
+const uiInitialState = {
+  isCartVisible: false,
+  notification: null,
+};
 
 // Creating out first slice or redux functions to manage cart actions
 const uiReducer = createSlice({
@@ -11,6 +14,14 @@ const uiReducer = createSlice({
   reducers: {
     showCartToggler(state) {
       state.isCartVisible = !state.isCartVisible;
+    },
+    showNotification(state, action) {
+      // Updating the previous state with updated State without mutating
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
     },
   },
 });
