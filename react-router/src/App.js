@@ -3,20 +3,23 @@ import React from "react";
 import { Route } from "react-router-dom";
 
 // Importing other components
-import Welcome from "./components/Welcome";
-import Products from "./components/Products";
+import Welcome from "./pages/Welcome";
+import Products from "./pages/Products";
 
 function App() {
   return (
-    <div>
-      {/* Welcome is only rendered when the path is active */}
-      <Route path="/welcome">
-        <Welcome />
-      </Route>
-      <Route path="/products">
-        <Products />
-      </Route>
-    </div>
+    <section>
+      <header></header>
+      <main>
+        {/* Welcome is only rendered when the path is active */}
+        <Route path="/welcome">
+          <Welcome />
+        </Route>
+        <Route path="/products">
+          <Products />
+        </Route>
+      </main>
+    </section>
   );
 }
 
