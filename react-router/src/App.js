@@ -1,6 +1,6 @@
 // importing React and necessary packages
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 // Importing other components
 import MainHeader from "./components/MainHeader";
@@ -13,17 +13,22 @@ function App() {
     <section>
       <MainHeader />
       <main>
-        {/* Welcome is only rendered when the path is active */}
-        <Route path="/welcome">
-          <Welcome />
-        </Route>
-        <Route path="/products">
-          <Products />
-        </Route>
-        {/* This will a dynamic Route path which will render the page according to Params */}
-        <Route path="/product-detail/:id">
-          <ProductDetail />
-        </Route>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/welcome" />
+          </Route>
+          {/* Welcome is only rendered when the path is active */}
+          <Route path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/products" exact>
+            <Products />
+          </Route>
+          {/* This will a dynamic Route path which will render the page according to Params */}
+          <Route path="/products/:id">
+            <ProductDetail />
+          </Route>
+        </Switch>
       </main>
     </section>
   );
