@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import ProductItem from "../components/Products/ProductItem";
-import { ProductContext } from "../context/products-context";
+// Using our custom Store
+import { useStore } from "../hooks-store/store";
 import "./Products.css";
 
 const Products = (props) => {
-  // Using Context to get the products
-  const productCtx = useContext(ProductContext);
+  // Using Custom Store
+  const state = useStore()[0];
 
   return (
     <ul className="products-list">
-      {productCtx.products.map((prod) => (
+      {state.products.map((prod) => (
         <ProductItem
           key={prod.id}
           id={prod.id}

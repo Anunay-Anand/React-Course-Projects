@@ -11,9 +11,9 @@ export const useStore = () => {
   const setState = useState(globalState)[1];
 
   // Creating a global dispatch
-  const dispatch = (actionIdentifier) => {
+  const dispatch = (actionIdentifier, payload) => {
     // We pass an actionKey to select specific action from object and provide prevState
-    const newState = actions[actionIdentifier](globalState);
+    const newState = actions[actionIdentifier](globalState, payload);
     // New globalState is then formed with globalState + newState
     globalState = { ...globalState, ...newState };
     // Telling all pages of changed state
